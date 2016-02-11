@@ -1,37 +1,53 @@
-function [ varargout ] = vol_builder( directory,channels )
+function [ varargout ] = vol_builder( filePath,channels )
 %vol_builder This function makes a volume image out of an image sequence
 %of a fixed embryo
-home = pwd;
-cd(directory);
 
-L  = dir();
-L = L(3:length(L));
+[L] = filename_reader(filePath);
 
-if channels == 3
-    for i = 1:3:length(L) %building 3d image volumes
-        ch1vol(:,:,i) = double(imread(L(i).name));
-        ch2vol(:,:,i) = double(imread(L(i+1).name));
-        ch3vol(:,:,i) = double(imread(L(+2).name));
-    end
-    varargout = {ch1vol,ch2vol,ch3vol};
+[m,n] = size(imread(strcat(filePath,L{1})));
 
+switch channels
+    case 3
+        [ch1vol,ch2vol,ch3vol] = deal(zeros(m,n,length(L)/3));
+
+        for i = 1:3:length(L) %building 3d image volumes
+            ch1vol(:,:,i) = imread(strcat(filePath,L{i}));
+        end
+
+        for i = 1:3:length(L) %building 3d image volumes
+            ch2vol(:,:,i) = imread(strcat(filePath,L{i+1}));
+        end
+
+        for i = 1:3:length(L) %building 3d image volumes
+            ch3vol(:,:,i) = imread(strcat(filePath,L{i+2}));
+        end
+
+        varargout = {ch1vol,ch2vol,ch3vol};
     
-elseif channels == 2
-    for i = 1:3:length(L) %building 3d image volumes
-        ch1vol(:,:,i) = double(imread(L(i).name));
-        ch2vol(:,:,i) = double(imread(L(i+1).name));
-    end
-    varargout = {ch1vol,ch2vol};
+    case 2
+        [ch1vol,ch2vol] = deal(zeros(m,n,length(L)/2));
 
+        for i = 1:3:length(L) %building 3d image volumes
+            ch1vol(:,:,i) = imread(strcat(filePath,L{i}));
+        end
+
+        for i = 1:3:length(L) %building 3d image volumes
+            ch2vol(:,:,i) = imread(strcat(filePath,L{i+1}));
+        end
+
+        varargout = {ch1vol,ch2vol};
     
-elseif channels == 1
-    for i = 1:3:length(L) %building 3d image volumes
-        ch1vol(:,:,i) = double(imread(L(i).name));
-    end
-    varargout = {ch1vol};
+    case 1
+        [ch1vol] = deal(zeros(m,n,length(L)));
+
+        for i = 1:3:length(L) %building 3d image volumes
+            ch1vol(:,:,i) = imread(strcat(filePath,L{i}));
+        end
+
+        varargout = {ch1vol};
 end
 
-cd(home)
+
 
 end
 

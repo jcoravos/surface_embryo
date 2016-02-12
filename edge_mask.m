@@ -1,0 +1,46 @@
+function [edgeMask] = edge_mask(ch1vol,ch2vol,ch3vol,I,erosionRadius,edgeDilation)
+%% This function takes channel volumes and produces a mask of
+%the contained images. It enters in ~1/2 a cell diameter. 
+%I is a threshold value between 0 and 1, default graythresh of middle slice
+%erosionRadius is a strel input, default 15
+%edgeDilation is a strel input, default 30
+disp('masking edges...')
+
+volSum = (ch1vol+ch2vol+ch3vol);
+[m,n,p] = size(volSum);
+buff = zeros(20,n,p);
+volSum2 = cat(1,buff,volSum);
+
+
+% Check for input variables
+if nargin >  6 | nargin < 3
+    error('Incorrect number of inputs')
+end
+
+% Fill in additional unsupplied variables
+switch nargin
+    case 3
+        I = graythresh(volSum(:,:,p/2));
+        erosionRadius = 6;
+        edgeDilation = 5;
+    case 4
+        erosionRadius = 6;
+        edgeDilation = 5;
+    case 5
+        edgeDilation = 5;
+end
+
+% build strels
+    strelErode = strel('disk',erosionRadius);
+    strelDilate = strel('disk',edgeDilation);
+
+for i = 1:p
+    volSum2BW = imerode(im2bw(volSum2(:,:,i),I),strelErode);
+    Edge = edge(volSum2BW,'Sobel');
+    edgeMask(:,:,i) = imdilate(Edge,strelDilate);
+    edgeMask(:,:,i) = imclose(edgeMask(:,:,i),strelDilate);
+end
+
+edgeMask = edgeMask([21:end],:,:);
+
+end

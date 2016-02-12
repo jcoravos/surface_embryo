@@ -5,47 +5,47 @@ function [ varargout ] = vol_builder( filePath,channels )
 [L] = filename_reader(filePath);
 
 [m,n] = size(imread(strcat(filePath,L{1})));
-disp('building volume...')
+
 switch channels
     case 3
-        [ch1vol,ch2vol,ch3vol] = deal(zeros(m,n));
+        [ch1vol,ch2vol,ch3vol] = deal(zeros(m,n,length(L)/3));
 
         for i = 1:3:length(L) %building 3d image volumes
-            ch1vol(:,:,(i+2)/3) = imread(strcat(filePath,L{i}));
+            ch1vol(:,:,i) = imread(strcat(filePath,L{i}));
         end
 
         for i = 1:3:length(L) %building 3d image volumes
-            ch2vol(:,:,(i+2)/3) = imread(strcat(filePath,L{i+1}));
+            ch2vol(:,:,i) = imread(strcat(filePath,L{i+1}));
         end
 
         for i = 1:3:length(L) %building 3d image volumes
-            ch3vol(:,:,(i+2)/3) = imread(strcat(filePath,L{i+2}));
+            ch3vol(:,:,i) = imread(strcat(filePath,L{i+2}));
         end
 
         varargout = {ch1vol,ch2vol,ch3vol};
     
     case 2
-        [ch1vol,ch2vol] = deal(zeros(m,n));
+        [ch1vol,ch2vol] = deal(zeros(m,n,length(L)/2));
 
         for i = 1:3:length(L) %building 3d image volumes
-            ch1vol(:,:,(i+1)/2) = imread(strcat(filePath,L{i}));
+            ch1vol(:,:,i) = imread(strcat(filePath,L{i}));
         end
 
         for i = 1:3:length(L) %building 3d image volumes
-            ch2vol(:,:,(i+1)/2) = imread(strcat(filePath,L{i+1}));
+            ch2vol(:,:,i) = imread(strcat(filePath,L{i+1}));
         end
 
         varargout = {ch1vol,ch2vol};
     
     case 1
-        [ch1vol] = deal(zeros(m,n));
+        [ch1vol] = deal(zeros(m,n,length(L)));
 
         for i = 1:3:length(L) %building 3d image volumes
             ch1vol(:,:,i) = imread(strcat(filePath,L{i}));
         end
 
         varargout = {ch1vol};
-end
+
 
 
 

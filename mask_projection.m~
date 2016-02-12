@@ -1,0 +1,16 @@
+function [ surfProj ] = mask_projection(maskedVol,channel)
+
+[m,n,p] = size(maskedVol);
+
+maskedPixels = maskedVol.*channel
+sortedPixels = sort(maskedPixels,3)
+
+surfProj = sum(sortedPixels(
+
+
+
+
+end
+
+
+

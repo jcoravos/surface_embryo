@@ -1,5 +1,5 @@
 
-folderDirectory = '/Volumes/CORAVOS3/6715shWhite(III)-568Dcad647MBS/'
+folderDirectory = '/Volumes/CORAVOS3/6715shDia(HMS)-568adducin647MBS/'
 rFolderList = struct2cell(dir(folderDirectory))
 folderList = cell(0)
 

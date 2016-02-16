@@ -20,7 +20,7 @@ end
 % Fill in additional unsupplied variables
 switch nargin
     case 3
-        I = graythresh(volSum(:,:,p/2));
+        I = graythresh(volSum(:,:,round(p/2)));
         erosionRadius = 6;
         edgeDilation = 5;
     case 4

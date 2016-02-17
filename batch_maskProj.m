@@ -9,15 +9,16 @@ function [ maskProjCh1, maskProjCh2, maskProjCh3 ] = batch_maskProj(directory,ch
         
         pEdgeMask = edge_mask(pch1vol,pch2vol,pch3vol);
         edgeMask = permute(pEdgeMask,[2,3,1]);
-        maskedVolCh1 = volume_mask(edgeMask,ch1vol);
+        edgeMask_smooth = smooth_mask(edgeMask);
+        maskedVolCh1 = volume_mask(edgeMask_smooth,ch1vol);
         maskProjCh1 = mask_projection(maskedVolCh1,ch1vol);
 
 
-        maskedVolCh2 = volume_mask(edgeMask,ch2vol);
+        maskedVolCh2 = volume_mask(edgeMask_smooth,ch2vol);
         maskProjCh2 = mask_projection(maskedVolCh2,ch2vol);
 
 
-        maskedVolCh3 = volume_mask(edgeMask,ch3vol);
+        maskedVolCh3 = volume_mask(edgeMask_smooth,ch3vol);
         maskProjCh3 = mask_projection(maskedVolCh3,ch3vol);
     end
     

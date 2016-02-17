@@ -4,8 +4,8 @@ folderDirectories = {'/Volumes/CORAVOS3/6715shDia(HMS)-568adducin647MBS/',...
                      '/Volumes/CORAVOS3/6715shWhite(III)-568Dcad647MBS/'}
                    
 
-for h = 1:4
-folderDirectory = folderDirectories{h}
+for i = 1:4
+folderDirectory = '/Volumes/CORAVOS3/6715shDia(HMS)-568adducin647MBS/'
 rFolderList = struct2cell(dir(folderDirectory))
 folderList = cell(0)
 
@@ -42,5 +42,4 @@ for i = 1:length(folderList)
     imwrite(Ch2uint8,char(strcat(directory,'/sp_data/sp_c002.tif')));
     imwrite(Ch3uint8,char(strcat(directory,'/sp_data/sp_c003.tif')));
     
-end
 end
